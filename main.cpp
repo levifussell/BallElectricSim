@@ -18,9 +18,17 @@ const int MAX_ELECTRIC_DISTANCE = 15;
 
 const float PROBABILITY_OF_BLUE_SEED = 0.2f;
 
-const int BALL_DRAW_SIZE = 5;
+const int MAX_STICKY_COUNT = 20;
+
+const int BALL_DRAW_SIZE = 1;
 
 const int tickrate = 1000;
+
+const sf::Vector2f sensorAPosition = sf::Vector2f(20, 150);
+const sf::Vector2f sensorASize = sf::Vector2f(10, 10);
+
+const sf::Vector2f sensorBPosition = sf::Vector2f(740, 160);
+const sf::Vector2f sensorBSize = sf::Vector2f(10, 10);
 
 unsigned long intervalEndTime;
 
@@ -141,13 +149,15 @@ class Ball
                 //}
             }
 
-            if(this->position.y > 150 && this->position.y < 160
-                    && this->position.x > 20 && this->position.x < 30)
+            if(this->position.y > sensorAPosition.y && this->position.y < sensorAPosition.y + sensorASize.y
+                    && this->position.x > sensorAPosition.x && this->position.x < sensorAPosition.x + sensorASize.x)
             {
                 this->setState(STICKY);
             }
-            if(this->position.y > 150 && this->position.y < 160
-                    && this->position.x > 740 && this->position.x < 750)
+            //if(this->position.y > 150 && this->position.y < 160
+                    //&& this->position.x > 740 && this->position.x < 750)
+            if(this->position.y > sensorBPosition.y && this->position.y < sensorBPosition.y + sensorBSize.y
+                    && this->position.x > sensorBPosition.x && this->position.x < sensorBPosition.x + sensorBSize.x)
             {
                 this->setState(STICKY);
             }
@@ -163,7 +173,7 @@ class Ball
 
             if(this->state == STICKY)
             {
-                this->stickyCount = 20;
+                this->stickyCount = MAX_STICKY_COUNT;
             }
 
             if(this->state == ELECTRIC)
