@@ -216,6 +216,7 @@ class Ball
 
             window.draw(ball);
 
+
         }
 
         sf::Vector2f getPosition() { return this->position; }
@@ -439,6 +440,17 @@ bool collision(Ball* ballA, Ball* ballB)
 
 void print(sf::RenderWindow& window, Ball* balls, const int BALLS_COUNT)
 {
+    //draw sensors
+    for(int i = 0; i < SENSOR_COUNT; ++i)
+    {
+        sf::RectangleShape sensor;
+        sensor.setSize(sensorSizes[i]);
+        sensor.setPosition(sensorPositions[i]);
+        sensor.setFillColor(sf::Color(30, 30, 30));
+        window.draw(sensor);
+    }
+
+    //draw balls
     for(int i = 0; i < BALLS_COUNT; ++i)
     {
         balls[i].draw(window);
