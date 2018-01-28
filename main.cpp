@@ -24,11 +24,16 @@ const int BALL_DRAW_SIZE = 1;
 
 const int tickrate = 1000;
 
-const sf::Vector2f sensorAPosition = sf::Vector2f(20, 150);
-const sf::Vector2f sensorASize = sf::Vector2f(10, 10);
+const int SENSOR_COUNT = 2;
+const sf::Vector2f sensorPositions[SENSOR_COUNT] = {
+    sf::Vector2f(20, 150),
+    sf::Vector2f(740, 160)
+};
 
-const sf::Vector2f sensorBPosition = sf::Vector2f(740, 160);
-const sf::Vector2f sensorBSize = sf::Vector2f(10, 10);
+const sf::Vector2f sensorSizes[SENSOR_COUNT] = {
+    sf::Vector2f(10, 10),
+    sf::Vector2f(10, 10)
+};
 
 unsigned long intervalEndTime;
 
@@ -149,17 +154,13 @@ class Ball
                 //}
             }
 
-            if(this->position.y > sensorAPosition.y && this->position.y < sensorAPosition.y + sensorASize.y
-                    && this->position.x > sensorAPosition.x && this->position.x < sensorAPosition.x + sensorASize.x)
+            for(int i = 0; i < SENSOR_COUNT; ++i)
             {
-                this->setState(STICKY);
-            }
-            //if(this->position.y > 150 && this->position.y < 160
-                    //&& this->position.x > 740 && this->position.x < 750)
-            if(this->position.y > sensorBPosition.y && this->position.y < sensorBPosition.y + sensorBSize.y
-                    && this->position.x > sensorBPosition.x && this->position.x < sensorBPosition.x + sensorBSize.x)
-            {
-                this->setState(STICKY);
+                if(this->position.y > sensorPositions[i].y && this->position.y < sensorPositions[i].y + sensorSizes[i].y
+                        && this->position.x > sensorPositions[i].x && this->position.x < sensorPositions[i].x + sensorSizes[i].x)
+                {
+                    this->setState(STICKY);
+                }
             }
 
             // make everything an integer
