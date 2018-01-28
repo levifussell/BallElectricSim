@@ -13,6 +13,15 @@ const int MARGIN = 5;
 
 const int INIT_BALLS_COUNT = 3500;
 
+const int MAX_COLLISION_DISTANCE = 10;
+const int MAX_ELECTRIC_DISTANCE = 15;
+
+const float PROBABILITY_OF_BLUE_SEED = 0.2f;
+
+const int BALL_DRAW_SIZE = 5;
+
+const int tickrate = 1000;
+
 unsigned long intervalEndTime;
 
 
@@ -142,6 +151,10 @@ class Ball
             {
                 this->setState(STICKY);
             }
+
+            // make everything an integer
+            this->position.x = int(this->position.x);
+            this->position.y = int(this->position.y);
         }
 
         void setState(STATE state)
@@ -185,7 +198,7 @@ class Ball
         {
             //water rec
             sf::RectangleShape ball;
-            ball.setSize(sf::Vector2f(5, 5));
+            ball.setSize(sf::Vector2f(BALL_DRAW_SIZE, BALL_DRAW_SIZE));
             ball.setPosition(this->position);
             ball.setFillColor(this->getStateColor());
 
@@ -218,7 +231,6 @@ bool collision(Ball* ballA, Ball* ballB);
 void update(Ball* balls, const int BALLS_COUNT);
 void print(sf::RenderWindow& window, Ball* balls, const int BALLS_COUNT);
 
-const int tickrate = 1000;
 
 int main(int n, char** vars)
 {
@@ -237,7 +249,7 @@ int main(int n, char** vars)
                         sf::Vector2f(randFloat()*1.0, randFloat()*1.0));
 
         float r = float(rand()) / RAND_MAX;
-        if(r < 0.2)
+        if(r < PROBABILITY_OF_BLUE_SEED)
             balls[i].setState(Ball::FROZEN);
     }
     //balls[0].setPosition(sf::Vector2f(20, 20));
@@ -320,7 +332,7 @@ bool collision(Ball* ballA, Ball* ballB)
 
         bool collision = dist < 30.0f;
 
-        if(dist < 10.0)
+        if(dist < MAX_COLLISION_DISTANCE)
         {
             //if((ballA->getState() == Ball::STICKY && ballB->getState() == Ball::STICKY)
                 //||(ballA->getState() == Ball::FROZEN && ballB->getState() == Ball::STICKY)
@@ -374,7 +386,7 @@ bool collision(Ball* ballA, Ball* ballB)
 
         }
 
-        if(dist < 15.0)
+        if(dist < MAX_ELECTRIC_DISTANCE)
         {
             if(((ballA->getState() == Ball::FROZEN /*|| ballA->getState() == Ball::ELECTRIC*/) && ballB->getState() == Ball::ELECTRIC)
                     && ballB->getElectricCount() >= Ball::ELECTRIC_MAX -1 )
